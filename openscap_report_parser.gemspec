@@ -12,7 +12,7 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.license = 'GPL-3.0'
 
   gem.summary = 'Parse ARF reports to json'
-  gem.description = "This gem gets XML ARF reports and parses it to json output"
+  gem.description = 'This gem gets XML ARF reports and parses it to json output'
 
   gem.add_development_dependency 'bundler', '>=1.0.0'
   gem.add_runtime_dependency 'openscap', '>= 0.4.2'
