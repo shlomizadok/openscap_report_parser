@@ -18,36 +18,28 @@ module OpenscapReportParser
       @items = @bench.items
     end
 
-    def parsed_report
-      parsed_data = {}
-      parsed_data[:metrics] = metrics
-      parsed_data[:logs] = logs
-      parsed_data.to_json
+    def as_json
+      parse_report.to_json
     end
 
 
     private
 
-    def logs
-      logs = []
-      @results.each do |rr_id, result|
-        log = {}
-        result_data = search_hash(@items, rr_id)
-        log[:source] = rr_id
-        log[:result] = result.result
-        log[:title] = result_data.title
-        log[:description] = result_data.description
-        log[:rationale] = result_data.rationale
-        logs << log
-      end
-      logs
-    end
-
-    def metrics
+    def parse_report
+      report = {}
+      report[:logs] = []
       passed = 0
       failed = 0
-      othered = 0
+      other = 0
       @results.each do |rr_id, result|
+        # get rules and their results
+        rule_data = search_hash(@items, rr_id)
+        if result.result != 'notapplicable' && result.result != 'notselected'
+          log = populate_result_data(rr_id, result.result, rule_data)
+          report[:logs] << log
+        end
+
+        # create metrics for the results
         case result.result
           when 'pass', 'fixed'
             passed = passed + 1
@@ -56,10 +48,22 @@ module OpenscapReportParser
           when 'notapplicable', 'notselected'
             next
           else
-            othered = othered + 1
+            other = other + 1
         end
       end
-      {:passed => passed, :failed => failed, :other => othered}
+      report[:metrics] = { :passed => passed, :failed => failed, :other => other }
+      report
+    end
+
+    def populate_result_data(result_id, rule_result, rule_data)
+      log = {}
+      log[:source] = result_id
+      log[:result] = rule_result
+      log[:title] = rule_data.title
+      log[:description] = rule_data.description
+      log[:rationale] = rule_data.rationale
+      log[:references] = rule_data.references
+      log
     end
 
     def search_hash(h, search)
