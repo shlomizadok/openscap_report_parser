@@ -10,7 +10,7 @@ module OpenscapReportParser
     def initialize(arf_data)
       OpenSCAP.oscap_init
       size         = arf_data.size
-      @arf         = OpenSCAP::DS::Arf.new(content: arf_data, path: 'arf.xml.bz2', length: size)
+      @arf         = OpenSCAP::DS::Arf.new(:content => arf_data, :path => 'arf.xml.bz2', :length => size)
       @results     = @arf.test_result.rr
       sds          = @arf.report_request
       bench_source = sds.select_checklist!
@@ -50,7 +50,7 @@ module OpenscapReportParser
           other += 1
         end
       end
-      report[:metrics] = { passed: passed, failed: failed, other: other }
+      report[:metrics] = { :passed => passed, :failed => failed, :other => other }
       report
     end
 
