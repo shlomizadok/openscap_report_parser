@@ -4,6 +4,7 @@ require 'openscap/xccdf/testresult'
 require 'openscap/xccdf/ruleresult'
 require 'openscap/xccdf/rule'
 require 'openscap/xccdf/benchmark'
+require 'json'
 
 module OpenscapReportParser
   class Parse
@@ -20,6 +21,10 @@ module OpenscapReportParser
 
     def as_json
       parse_report.to_json
+    end
+
+    def json_with_arf_html
+      parse_report.merge!(:html => @arf.html)
     end
 
     private

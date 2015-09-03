@@ -14,8 +14,10 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.summary = 'Parse ARF reports to json'
   gem.description = 'This gem gets XML ARF reports and parses it to json output'
 
-  gem.add_development_dependency 'bundler', '>=1.0.0'
   gem.add_runtime_dependency 'openscap', '>= 0.4.2'
+  gem.add_development_dependency 'bundler', '~> 1.10'
+  gem.add_development_dependency 'rake', '~> 10.0'
+  gem.add_development_dependency 'rspec'
   gem.extra_rdoc_files = ['README.md', 'LICENSE']
   gem.files = Dir['{lib,test}/**/*'] + gem.extra_rdoc_files
   gem.require_path = 'lib'
