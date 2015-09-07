@@ -67,7 +67,8 @@ module OpenscapReportParser
       log[:title]       = rule_data.title
       log[:description] = rule_data.description
       log[:rationale]   = rule_data.rationale
-      log[:references]  = rule_data.references
+      log[:references]  = rule_data.references.map(&:to_hash)
+      log[:fixes]       = rule_data.fixes.map(&:to_hash)
       log
     end
 
