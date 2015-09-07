@@ -24,7 +24,8 @@ module OpenscapReportParser
     end
 
     def json_with_arf_html
-      parse_report.merge!(:html => @arf.html)
+      html = @arf.html.force_encoding('UTF-8')
+      parse_report.merge!(:html => html).to_json
     end
 
     private

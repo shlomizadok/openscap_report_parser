@@ -25,7 +25,18 @@ describe OpenscapReportParser do
       file = File.open(file_path, 'rb').read
       parser = OpenscapReportParser::Parse.new(file)
       json = JSON.parse(parser.as_json)
+      expect(json).to include('logs')
       expect(json['metrics']).to eq('passed' => 34, 'failed' => 33, 'other' => 1)
+    end
+
+    it 'should include html code' do
+      file_path = Dir.pwd + '/spec/data/report_example'
+      file = File.open(file_path, 'rb').read
+      parser = OpenscapReportParser::Parse.new(file)
+      json = JSON.parse(parser.json_with_arf_html)
+      expect(json).to include('logs')
+      expect(json['html']).to include "<!DOCTYPE html>"
+      expect(json['html']).to include "</html>"
     end
   end
 end
